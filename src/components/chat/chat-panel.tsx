@@ -172,7 +172,7 @@ export function ChatPanel() {
     }
   };
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       {/* Chat Messages Scroll Area */}
       <ScrollArea className="flex-1 overflow-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
@@ -222,13 +222,8 @@ export function ChatPanel() {
         </div>
       </ScrollArea>
 
-      {/* Input Area - fixed at bottom */}
-      <div className="border-t bg-background px-4 py-3 " style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '-webkit-fill-available'
-
-      }}>
+      {/* Input Area */}
+      <div className="border-t bg-background px-4 py-3">
         <form onSubmit={handleSubmit} className="relative">
           <Textarea
             value={input}
