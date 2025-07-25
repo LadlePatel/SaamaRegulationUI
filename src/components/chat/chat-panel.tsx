@@ -40,18 +40,18 @@ export function ChatPanel() {
         setMessages(JSON.parse(storedMessages));
       } else {
         // This case might happen if the URL is for a session that doesn't exist in localStorage
-        setMessages(initialMessages);
+        setMessages([]);
       }
     } else {
       const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       setSessionId(newSessionId);
-      setMessages(initialMessages);
+      setMessages([]);
     }
   }, [params.chatId]);
 
 
   useEffect(() => {
-    // Save messages to local storage whenever they change
+    // Save messages to local storage whenever they change, but only if there are messages.
     if (sessionId && messages.length > 0) {
       localStorage.setItem(CHAT_HISTORY_KEY_PREFIX + sessionId, JSON.stringify(messages));
     }
@@ -114,16 +114,19 @@ export function ChatPanel() {
       content: input,
     };
     
+    // Immediately add the user's message to the state to update the UI
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
+    
     const currentInput = input;
     setInput("");
     setIsLoading(true);
     
     try {
-      // For a new chat, there is no history to send, just the first question.
-      // For an existing chat, we send previous messages.
-      const historyForApi = messages.map(({ role, content }) => ({ role, content }));
+      // Use the 'updatedMessages' array to build the history.
+      // The API expects the history to be the messages *before* the current question.
+      // So we take all but the last message.
+      const historyForApi = updatedMessages.slice(0, -1).map(({ role, content }) => ({ role, content }));
 
       const apiResponse = await fetch('http://localhost:8000/chat', {
         method: 'POST',
