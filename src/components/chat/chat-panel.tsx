@@ -16,13 +16,7 @@ import { useParams, useRouter } from "next/navigation";
 import type { Message, ChatSession } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 
-const initialMessages: Message[] = [
-  {
-    id: "1",
-    role: "assistant",
-    content: "Welcome to **SaamaRegulation**! I'm your AI assistant, ready to help you navigate the complex world of regulations. How can I assist you today?",
-  },
-];
+const initialMessages: Message[] = [];
 
 export function ChatPanel() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -58,7 +52,7 @@ export function ChatPanel() {
 
   useEffect(() => {
     // Save messages to local storage whenever they change
-    if (sessionId && messages.length > 1) { // don't save initial message alone
+    if (sessionId && messages.length > 0) {
       localStorage.setItem(CHAT_HISTORY_KEY_PREFIX + sessionId, JSON.stringify(messages));
     }
   }, [messages, sessionId]);
@@ -128,10 +122,8 @@ export function ChatPanel() {
     
     try {
       // For a new chat, there is no history to send, just the first question.
-      // For an existing chat, we send previous messages, excluding the welcome message.
-      const historyForApi = (isNewChat ? [] : messages.slice(1))
-        .map(({ role, content }) => ({ role, content }));
-
+      // For an existing chat, we send previous messages.
+      const historyForApi = messages.map(({ role, content }) => ({ role, content }));
 
       const apiResponse = await fetch('http://localhost:8000/chat', {
         method: 'POST',
