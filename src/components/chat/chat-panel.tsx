@@ -109,9 +109,9 @@ export function ChatPanel() {
       currentSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       setSessionId(currentSessionId);
     }
-
+    
     if (isNewChat) {
-      handleNewChat(currentSessionId, input);
+        handleNewChat(currentSessionId, input);
     }
 
     const userMessage: Message = {
@@ -119,16 +119,17 @@ export function ChatPanel() {
       role: "user",
       content: input,
     };
-
+    
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     const currentInput = input;
     setInput("");
     setIsLoading(true);
-
+    
     try {
-      const historyForApi = updatedMessages
-        .slice(1, -1) // Exclude initial welcome message and the current user message
+      // For a new chat, there is no history to send, just the first question.
+      // For an existing chat, we send previous messages, excluding the welcome message.
+      const historyForApi = (isNewChat ? [] : messages.slice(1))
         .map(({ role, content }) => ({ role, content }));
 
 
@@ -160,15 +161,15 @@ export function ChatPanel() {
       setMessages((prev) => [...prev, assistantResponse]);
     } catch (error: any) {
       console.error("Error fetching chat response:", error);
-      const originalMessages = messages;
-      setMessages(updatedMessages.slice(0, -1));
+      
+      // On error, revert the user's message from the UI to allow them to try again
+      setMessages(messages);
 
       toast({
         variant: "destructive",
         title: "Error",
         description: error.message || "Failed to get a response. Please try again.",
       });
-      setMessages(originalMessages);
     } finally {
       setIsLoading(false);
     }
