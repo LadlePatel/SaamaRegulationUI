@@ -127,11 +127,10 @@ export function ChatPanel() {
     setIsLoading(true);
 
     try {
-      // Remove the initial welcome message and the user's latest message for the API call
-      const historyForApi = updatedMessages.slice(1, -1).map(m => ({
-        role: m.role,
-        content: m.content
-      }));
+      const historyForApi = updatedMessages
+        .slice(1, -1) // Exclude initial welcome message and the current user message
+        .map(({ role, content }) => ({ role, content }));
+
 
       const apiResponse = await fetch('http://localhost:8000/chat', {
         method: 'POST',
@@ -161,12 +160,15 @@ export function ChatPanel() {
       setMessages((prev) => [...prev, assistantResponse]);
     } catch (error: any) {
       console.error("Error fetching chat response:", error);
+      const originalMessages = messages;
+      setMessages(updatedMessages.slice(0, -1));
+
       toast({
         variant: "destructive",
         title: "Error",
         description: error.message || "Failed to get a response. Please try again.",
       });
-      // Restore previous messages if API call fails
+      setMessages(originalMessages);
     } finally {
       setIsLoading(false);
     }
