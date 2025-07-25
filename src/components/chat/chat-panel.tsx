@@ -103,29 +103,20 @@ export function ChatPanel() {
       currentSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
       setSessionId(currentSessionId);
     }
-    
-    if (isNewChat) {
-        handleNewChat(currentSessionId, input);
-    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content: input,
     };
-    
-    // Immediately add the user's message to the state to update the UI
+
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
-    
     const currentInput = input;
     setInput("");
     setIsLoading(true);
-    
+
     try {
-      // Use the 'updatedMessages' array to build the history.
-      // The API expects the history to be the messages *before* the current question.
-      // So we take all but the last message.
       const historyForApi = updatedMessages.slice(0, -1).map(({ role, content }) => ({ role, content }));
 
       const apiResponse = await fetch('http://localhost:8000/chat', {
@@ -154,12 +145,15 @@ export function ChatPanel() {
       };
 
       setMessages((prev) => [...prev, assistantResponse]);
+
+      // 🔥 Move session creation and router push *after* assistant message
+      if (isNewChat) {
+        handleNewChat(currentSessionId, currentInput);
+      }
+
     } catch (error: any) {
       console.error("Error fetching chat response:", error);
-      
-      // On error, revert the user's message from the UI to allow them to try again
-      setMessages(messages);
-
+      setMessages(messages); // Rollback
       toast({
         variant: "destructive",
         title: "Error",
@@ -169,8 +163,10 @@ export function ChatPanel() {
       setIsLoading(false);
     }
   };
+
+
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       {/* Chat Messages Scroll Area */}
       <ScrollArea className="flex-1 overflow-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
@@ -221,7 +217,12 @@ export function ChatPanel() {
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="border-t bg-background px-4 py-3">
+      <div className="border-t bg-background px-4 py-3 " style={{
+        position: 'fixed',
+        bottom: 0,
+        width: '-webkit-fill-available'
+
+      }}>
         <form onSubmit={handleSubmit} className="relative">
           <Textarea
             value={input}
