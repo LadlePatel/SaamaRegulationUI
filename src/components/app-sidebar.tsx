@@ -36,6 +36,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { ThemeToggle } from "@/components/theme-toggle";
 
 
 export function AppSidebar() {
@@ -167,6 +168,9 @@ export function AppSidebar() {
                 <span>Profile</span>
               </SidebarMenuButton>
             </Link>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+             <ThemeToggle />
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
