@@ -146,33 +146,19 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter className="p-2">
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <Link href="/settings" className="w-full">
-              <SidebarMenuButton
-                isActive={pathname === "/settings"}
-                className="w-full"
-              >
+        <div className="flex flex-row items-center justify-around w-full">
+            <Link href="/settings">
+              <Button variant="ghost" size="icon" className={pathname === "/settings" ? "bg-accent" : ""}>
                 <Settings className="h-5 w-5" />
-                <span>Settings</span>
-              </SidebarMenuButton>
+              </Button>
             </Link>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <Link href="/profile" className="w-full">
-              <SidebarMenuButton
-                isActive={pathname === "/profile"}
-                className="w-full"
-              >
+            <Link href="/profile">
+               <Button variant="ghost" size="icon" className={pathname === "/profile" ? "bg-accent" : ""}>
                 <User className="h-5 w-5" />
-                <span>Profile</span>
-              </SidebarMenuButton>
+              </Button>
             </Link>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
              <ThemeToggle />
-          </SidebarMenuItem>
-        </SidebarMenu>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
