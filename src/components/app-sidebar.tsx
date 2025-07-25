@@ -107,7 +107,7 @@ export function AppSidebar() {
         </SidebarMenu>
 
         <SidebarGroup className="mt-4">
-          <SidebarGroupLabel className="font-bold">Chat History</SidebarGroupLabel>
+          <SidebarGroupLabel className="font-bold text-base">Chat History</SidebarGroupLabel>
           <SidebarMenu>
             {chatHistory.map((chat) => (
               <SidebarMenuItem key={chat.id} className="group/item relative">
