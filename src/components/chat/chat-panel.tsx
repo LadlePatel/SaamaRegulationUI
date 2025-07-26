@@ -183,24 +183,21 @@ export function ChatPanel() {
               key={message.id}
               className={cn(
                 "flex items-start gap-4",
-                message.role === "user" && "flex-row-reverse"
+                message.role === "user" ? "justify-end" : "justify-start"
               )}
             >
-              <Avatar className="h-9 w-9 border">
-                {message.role === "assistant" ? (
+              {message.role === 'assistant' && (
+                <Avatar className="h-9 w-9 border">
                   <AvatarFallback className="bg-primary text-primary-foreground"><Bot /></AvatarFallback>
-                ) : (
-                  <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
-                )}
-              </Avatar>
-              <div className="flex-1 group/message space-y-2">
+                </Avatar>
+              )}
+              <div className="flex-1 group/message space-y-2 max-w-[85%]">
                  <div
                   className={cn(
-                    "max-w-[85%]",
                     "relative group",
                     message.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-tr-none"
-                      : "bg-muted rounded-tl-none",
+                      ? "bg-primary text-primary-foreground rounded-bl-lg"
+                      : "bg-muted rounded-br-lg",
                      "rounded-lg p-3"
                   )}
                 >
@@ -240,6 +237,11 @@ export function ChatPanel() {
                   </div>
               )}
               </div>
+               {message.role === 'user' && (
+                <Avatar className="h-9 w-9 border">
+                  <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
+                </Avatar>
+              )}
             </div>
           ))}
           {isLoading && (
@@ -289,3 +291,5 @@ export function ChatPanel() {
     </div>
   );
 }
+
+    
