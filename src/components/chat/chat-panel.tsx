@@ -196,8 +196,8 @@ export function ChatPanel() {
                   className={cn(
                     "relative group rounded-lg p-3",
                     message.role === "user"
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-card-foreground",
+                      ? "bg-primary text-primary-foreground rounded-tr-none"
+                      : "bg-muted text-card-foreground rounded-tl-none",
                   )}
                 >
                     <article className="prose prose-sm dark:prose-invert max-w-none text-inherit">
@@ -290,3 +290,5 @@ export function ChatPanel() {
     </div>
   );
 }
+
+    
