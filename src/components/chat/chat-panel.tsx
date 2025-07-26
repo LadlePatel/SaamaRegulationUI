@@ -9,13 +9,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SendHorizonal, Bot, User, FileText, Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TypingIndicator } from "./typing-indicator";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
 import type { Message, ChatSession, HighlightedContext } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Separator } from "@/components/ui/separator";
 
 
 const initialMessages: Message[] = [];
@@ -202,41 +203,46 @@ export function ChatPanel() {
                       : "bg-muted rounded-tl-none"
                   )}
                 >
-                  <CardContent className="p-3">
+                  <CardContent>
                     <article className="prose prose-sm dark:prose-invert max-w-none text-card-foreground">
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </article>
                   </CardContent>
                   {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
-                     <div className="absolute bottom-1 right-1 flex items-center">
-                        <TooltipProvider>
-                          {message.highlighted_contexts.map((context, index) => (
-                            <Tooltip key={index}>
-                              <TooltipTrigger asChild>
-                                <button className="transition-opacity">
-                                  <Dot className="h-6 w-6 text-primary" />
-                                </button>
-                              </TooltipTrigger>
-                              <TooltipContent className="w-80" align="end">
-                                <div className="space-y-4">
-                                  <h4 className="font-medium leading-none">Source</h4>
-                                  <div className="grid gap-2">
-                                      <div className="flex items-start gap-2 text-sm">
-                                        <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                                        <div className="flex flex-col">
-                                          <span className="font-semibold">{context.source}</span>
-                                          {context.page && <span>Page: {context.page}</span>}
-                                          {context.language && <span>Language: {context.language}</span>}
-                                           {context.context_text && <p className="mt-2 text-xs text-muted-foreground">{context.context_text}</p>}
+                     <>
+                        <Separator className="my-2" />
+                        <CardFooter>
+                          <div className="flex items-center justify-end w-full">
+                              <TooltipProvider>
+                                {message.highlighted_contexts.map((context, index) => (
+                                  <Tooltip key={index}>
+                                    <TooltipTrigger asChild>
+                                      <button className="transition-opacity">
+                                        <Dot className="h-6 w-6 text-primary" />
+                                      </button>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="w-80" align="end">
+                                      <div className="space-y-4">
+                                        <h4 className="font-medium leading-none">Source</h4>
+                                        <div className="grid gap-2">
+                                            <div className="flex items-start gap-2 text-sm">
+                                              <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                              <div className="flex flex-col">
+                                                <span className="font-semibold">{context.source}</span>
+                                                {context.page && <span>Page: {context.page}</span>}
+                                                {context.language && <span>Language: {context.language}</span>}
+                                                {context.context_text && <p className="mt-2 text-xs text-muted-foreground">{context.context_text}</p>}
+                                              </div>
+                                            </div>
                                         </div>
                                       </div>
-                                  </div>
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          ))}
-                        </TooltipProvider>
-                      </div>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                ))}
+                              </TooltipProvider>
+                          </div>
+                      </CardFooter>
+                    </>
                   )}
                 </Card>
               </div>
