@@ -191,16 +191,16 @@ export function ChatPanel() {
                   <AvatarFallback className="bg-primary text-primary-foreground"><Bot /></AvatarFallback>
                 </Avatar>
               )}
-              <div className="flex-1 group/message space-y-2 max-w-[85%]">
+              <div className="group/message space-y-2 max-w-[85%]">
                  <div
                   className={cn(
-                    "relative group",
+                    "relative group rounded-lg p-3",
                     message.role === "user"
-                      ? "bg-primary text-primary-foreground rounded-lg p-3"
-                      : "bg-transparent",
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-card-foreground",
                   )}
                 >
-                    <article className="prose prose-sm dark:prose-invert max-w-none text-card-foreground">
+                    <article className="prose prose-sm dark:prose-invert max-w-none text-inherit">
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </article>
                 </div>
@@ -290,7 +290,3 @@ export function ChatPanel() {
     </div>
   );
 }
-
-    
-
-    
