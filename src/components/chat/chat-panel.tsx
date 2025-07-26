@@ -191,10 +191,11 @@ export function ChatPanel() {
                   <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
                 )}
               </Avatar>
-              <div className="flex-1 group/message relative">
+              <div className="flex-1 group/message">
                  <Card
                   className={cn(
                     "max-w-[85%]",
+                    "relative group",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground rounded-tr-none"
                       : "bg-muted rounded-tl-none"
@@ -205,32 +206,32 @@ export function ChatPanel() {
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </article>
                   </CardContent>
-                </Card>
-                {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
-                   <Popover>
-                    <PopoverTrigger asChild>
-                      <button className="absolute bottom-1 right-1 opacity-0 group-hover/message:opacity-100 transition-opacity">
-                        <Dot className="h-6 w-6 text-muted-foreground" />
-                      </button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80" align="end">
-                      <div className="space-y-4">
-                        <h4 className="font-medium leading-none">Sources</h4>
-                        <div className="grid gap-2">
-                           {message.highlighted_contexts.map((context, index) => (
-                             <div key={index} className="flex items-start gap-2 text-sm">
-                               <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                               <span className="truncate">
-                                 {context.source}
-                                 {context.page && `, page ${context.page}`}
-                               </span>
-                             </div>
-                           ))}
+                  {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
+                     <Popover>
+                      <PopoverTrigger asChild>
+                        <button className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Dot className="h-6 w-6 text-primary" />
+                        </button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-80" align="end">
+                        <div className="space-y-4">
+                          <h4 className="font-medium leading-none">Sources</h4>
+                          <div className="grid gap-2">
+                             {message.highlighted_contexts.map((context, index) => (
+                               <div key={index} className="flex items-start gap-2 text-sm">
+                                 <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                 <span className="truncate">
+                                   {context.source}
+                                   {context.page && `, page ${context.page}`}
+                                 </span>
+                               </div>
+                             ))}
+                          </div>
                         </div>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                </Card>
               </div>
             </div>
           ))}
