@@ -205,34 +205,37 @@ export function ChatPanel() {
                     </article>
                 </div>
                 {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
-                  <div className="flex items-center justify-start w-full max-w-[85%] pt-1">
-                      <TooltipProvider>
-                        {message.highlighted_contexts.map((context, index) => (
-                          <Tooltip key={index}>
-                            <TooltipTrigger asChild>
-                              <button className="transition-opacity">
-                                <Dot className="h-6 w-6 text-primary" />
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent className="w-80" align="start">
-                              <div className="space-y-4">
-                                <h4 className="font-medium leading-none">Source</h4>
-                                <div className="grid gap-2">
-                                    <div className="flex items-start gap-2 text-sm">
-                                      <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                                      <div className="flex flex-col">
-                                        <span className="font-semibold">{context.source}</span>
-                                        {context.page && <span>Page: {context.page}</span>}
-                                        {context.language && <span>Language: {context.language}</span>}
-                                        {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
-                                      </div>
+                   <div className="flex items-center justify-start pt-1">
+                      <Separator />
+                      <div className="flex items-center justify-end w-full p-2">
+                        <TooltipProvider>
+                            {message.highlighted_contexts.map((context, index) => (
+                            <Tooltip key={index}>
+                                <TooltipTrigger asChild>
+                                <button className="transition-opacity">
+                                    <Dot className="h-6 w-6 text-primary" />
+                                </button>
+                                </TooltipTrigger>
+                                <TooltipContent className="w-80" align="start">
+                                <div className="space-y-4">
+                                    <h4 className="font-medium leading-none">Source</h4>
+                                    <div className="grid gap-2">
+                                        <div className="flex items-start gap-2 text-sm">
+                                            <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                            <div className="flex flex-col">
+                                                <span className="font-bold text-xs">{context.source}</span>
+                                                {context.page && <span className="text-sm">Page: {context.page}</span>}
+                                                {context.language && <span className="text-sm">Language: {context.language}</span>}
+                                                {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                              </div>
-                            </TooltipContent>
-                          </Tooltip>
-                        ))}
-                      </TooltipProvider>
+                                </TooltipContent>
+                            </Tooltip>
+                            ))}
+                        </TooltipProvider>
+                      </div>
                   </div>
               )}
               </div>
@@ -290,5 +293,3 @@ export function ChatPanel() {
     </div>
   );
 }
-
-    
