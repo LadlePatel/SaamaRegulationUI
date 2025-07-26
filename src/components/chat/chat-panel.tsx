@@ -6,15 +6,16 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SendHorizonal, Bot, User } from "lucide-react";
+import { SendHorizonal, Bot, User, FileText, Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TypingIndicator } from "./typing-indicator";
 import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
-import type { Message, ChatSession } from "@/lib/schemas";
+import type { Message, ChatSession, HighlightedContext } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 const initialMessages: Message[] = [];
 
@@ -117,9 +118,10 @@ export function ChatPanel() {
     setIsLoading(true);
 
     try {
-      const historyForApi = updatedMessages.slice(0, -1).map(({ role, content }) => ({ role, content }));
-
-      const apiResponse = await fetch('http://localhost:8080/chat', {
+      const historyForApi = updatedMessages
+        .map(({ role, content }) => ({ role, content }));
+      
+      const apiResponse = await fetch('http://192.168.29.126:8080/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -137,16 +139,20 @@ export function ChatPanel() {
       }
 
       const responseData = await apiResponse.json();
-
+      
       const assistantResponse: Message = {
         id: Date.now().toString(),
         role: "assistant",
         content: responseData.answer,
+        highlighted_contexts: responseData.highlighted_contexts,
       };
 
-      setMessages((prev) => [...prev, assistantResponse]);
+      setMessages((prev) => {
+        // Find the user message and remove it to replace with the full context
+        const newMessages = prev.filter(msg => msg.id !== userMessage.id);
+        return [...newMessages, userMessage, assistantResponse];
+      });
 
-      // 🔥 Move session creation and router push *after* assistant message
       if (isNewChat) {
         handleNewChat(currentSessionId, currentInput);
       }
@@ -166,7 +172,7 @@ export function ChatPanel() {
 
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       {/* Chat Messages Scroll Area */}
       <ScrollArea className="flex-1 overflow-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
@@ -185,20 +191,47 @@ export function ChatPanel() {
                   <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
                 )}
               </Avatar>
-              <Card
-                className={cn(
-                  "max-w-[85%] rounded-2xl",
-                  message.role === "user"
-                    ? "bg-primary text-primary-foreground rounded-tr-none"
-                    : "bg-muted rounded-tl-none"
+              <div className="flex-1 group/message relative">
+                 <Card
+                  className={cn(
+                    "max-w-[85%]",
+                    message.role === "user"
+                      ? "bg-primary text-primary-foreground rounded-tr-none"
+                      : "bg-muted rounded-tl-none"
+                  )}
+                >
+                  <CardContent className="p-3">
+                    <article className="prose prose-sm dark:prose-invert max-w-none text-card-foreground">
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
+                    </article>
+                  </CardContent>
+                </Card>
+                {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
+                   <Popover>
+                    <PopoverTrigger asChild>
+                      <button className="absolute bottom-1 right-1 opacity-0 group-hover/message:opacity-100 transition-opacity">
+                        <Dot className="h-6 w-6 text-muted-foreground" />
+                      </button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-80" align="end">
+                      <div className="space-y-4">
+                        <h4 className="font-medium leading-none">Sources</h4>
+                        <div className="grid gap-2">
+                           {message.highlighted_contexts.map((context, index) => (
+                             <div key={index} className="flex items-start gap-2 text-sm">
+                               <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                               <span className="truncate">
+                                 {context.source}
+                                 {context.page && `, page ${context.page}`}
+                               </span>
+                             </div>
+                           ))}
+                        </div>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                 )}
-              >
-                <CardContent className="p-3">
-                  <article className="prose prose-sm dark:prose-invert max-w-none text-card-foreground">
-                    <ReactMarkdown>{message.content}</ReactMarkdown>
-                  </article>
-                </CardContent>
-              </Card>
+              </div>
             </div>
           ))}
           {isLoading && (
@@ -217,18 +250,13 @@ export function ChatPanel() {
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="border-t bg-background px-4 py-3 " style={{
-        position: 'fixed',
-        bottom: 0,
-        width: '-webkit-fill-available'
-
-      }}>
+      <div className="border-t bg-background px-4 py-2">
         <form onSubmit={handleSubmit} className="relative">
           <Textarea
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask me anything about regulations..."
-            className="min-h-[52px] w-full rounded-2xl resize-none p-4 pr-16 border-input focus:border-primary-foreground"
+            className="min-h-[42px] w-full rounded-full resize-none p-3 pr-14 border-input focus:border-primary-foreground"
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -240,10 +268,10 @@ export function ChatPanel() {
           <Button
             type="submit"
             size="icon"
-            className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full h-9 w-9"
+            className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full h-8 w-8"
             disabled={isLoading || !input.trim()}
           >
-            <SendHorizonal className="h-5 w-5" />
+            <SendHorizonal className="h-4 w-4" />
             <span className="sr-only">Send</span>
           </Button>
         </form>
