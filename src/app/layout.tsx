@@ -13,6 +13,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "SaamaRegulation",
   description: "A modern, production-ready chat interface.",
+  icons: {
+    icon: "/anb.svg",
+  },
 };
 
 export default function RootLayout({
