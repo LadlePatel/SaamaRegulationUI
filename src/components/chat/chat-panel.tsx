@@ -194,21 +194,22 @@ export function ChatPanel() {
                 )}
               </Avatar>
               <div className="flex-1 group/message space-y-2">
-                 <Card
+                 <div
                   className={cn(
                     "max-w-[85%]",
                     "relative group",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground rounded-tr-none"
-                      : "bg-muted rounded-tl-none"
+                      : "bg-muted rounded-tl-none",
+                     "rounded-lg"
                   )}
                 >
-                  <CardContent>
+                  <CardContent className="p-3">
                     <article className="prose prose-sm dark:prose-invert max-w-none text-card-foreground">
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </article>
                   </CardContent>
-                </Card>
+                </div>
                 {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
                   <div className="flex items-center justify-start w-full max-w-[85%]">
                       <TooltipProvider>
@@ -229,7 +230,7 @@ export function ChatPanel() {
                                         <span className="font-semibold">{context.source}</span>
                                         {context.page && <span>Page: {context.page}</span>}
                                         {context.language && <span>Language: {context.language}</span>}
-                                        {context.context_text && <p className="mt-2 text-xs text-muted-foreground">{context.context_text}</p>}
+                                        {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
                                       </div>
                                     </div>
                                 </div>
@@ -289,5 +290,7 @@ export function ChatPanel() {
   );
 
 }
+
+    
 
     
