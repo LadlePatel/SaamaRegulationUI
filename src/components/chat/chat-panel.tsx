@@ -15,7 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
 import type { Message, ChatSession, HighlightedContext } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+
 
 const initialMessages: Message[] = [];
 
@@ -172,7 +173,7 @@ export function ChatPanel() {
 
 
   return (
-    <div className="flex flex-col flex-1">
+    <div className="flex flex-col flex-1 h-full">
       {/* Chat Messages Scroll Area */}
       <ScrollArea className="flex-1 overflow-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
@@ -208,30 +209,32 @@ export function ChatPanel() {
                   </CardContent>
                   {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
                      <div className="absolute bottom-1 right-1 flex items-center">
-                        {message.highlighted_contexts.map((context, index) => (
-                          <Popover key={index}>
-                            <PopoverTrigger asChild>
-                              <button className="transition-opacity">
-                                <Dot className="h-6 w-6 text-primary" />
-                              </button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-80" align="end">
-                              <div className="space-y-4">
-                                <h4 className="font-medium leading-none">Source</h4>
-                                <div className="grid gap-2">
-                                    <div className="flex items-start gap-2 text-sm">
-                                      <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                                      <div className="flex flex-col">
-                                        <span className="font-semibold">{context.source}</span>
-                                        {context.page && <span>Page: {context.page}</span>}
-                                        {context.language && <span>Language: {context.language}</span>}
+                        <TooltipProvider>
+                          {message.highlighted_contexts.map((context, index) => (
+                            <Tooltip key={index}>
+                              <TooltipTrigger asChild>
+                                <button className="transition-opacity">
+                                  <Dot className="h-6 w-6 text-primary" />
+                                </button>
+                              </TooltipTrigger>
+                              <TooltipContent className="w-80" align="end">
+                                <div className="space-y-4">
+                                  <h4 className="font-medium leading-none">Source</h4>
+                                  <div className="grid gap-2">
+                                      <div className="flex items-start gap-2 text-sm">
+                                        <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                        <div className="flex flex-col">
+                                          <span className="font-semibold">{context.source}</span>
+                                          {context.page && <span>Page: {context.page}</span>}
+                                          {context.language && <span>Language: {context.language}</span>}
+                                        </div>
                                       </div>
-                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </PopoverContent>
-                          </Popover>
-                        ))}
+                              </TooltipContent>
+                            </Tooltip>
+                          ))}
+                        </TooltipProvider>
                       </div>
                   )}
                 </Card>
@@ -284,5 +287,3 @@ export function ChatPanel() {
   );
 
 }
-
-    
