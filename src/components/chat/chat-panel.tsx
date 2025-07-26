@@ -121,7 +121,7 @@ export function ChatPanel() {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
       
-      const apiResponse = await fetch('http://192.168.29.126:8080/chat', {
+      const apiResponse = await fetch('http://localhost:8080/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
