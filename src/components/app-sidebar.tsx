@@ -37,6 +37,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { ThemeToggle } from "@/components/theme-toggle";
+import Image from "next/image";
 
 
 export function AppSidebar() {
@@ -88,7 +89,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <BotMessageSquare className="h-6 w-6 text-primary" />
+          <Image src="https://anbgpt.web.app/static/media/anb.17001d91be60b4e96b91f1420625ba78.svg" alt="SaamaRegulation Logo" width={24} height={24} className="h-6 w-6" />
           <span className="text-lg font-semibold">SaamaRegulation</span>
         </div>
       </SidebarHeader>
