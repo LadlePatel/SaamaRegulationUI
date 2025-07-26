@@ -6,6 +6,7 @@ export const HighlightedContextSchema = z.object({
   page: z.number().optional(),
   source: z.string(),
   language: z.string().optional(),
+  context_text: z.string().optional(),
 });
 
 export const MessageSchema = z.object({

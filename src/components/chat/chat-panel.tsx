@@ -227,6 +227,7 @@ export function ChatPanel() {
                                           <span className="font-semibold">{context.source}</span>
                                           {context.page && <span>Page: {context.page}</span>}
                                           {context.language && <span>Language: {context.language}</span>}
+                                           {context.context_text && <p className="mt-2 text-xs text-muted-foreground">{context.context_text}</p>}
                                         </div>
                                       </div>
                                   </div>
