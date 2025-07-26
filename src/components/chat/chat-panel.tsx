@@ -209,7 +209,7 @@ export function ChatPanel() {
                   {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
                      <Popover>
                       <PopoverTrigger asChild>
-                        <button className="absolute bottom-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button className="absolute bottom-1 right-1 transition-opacity">
                           <Dot className="h-6 w-6 text-primary" />
                         </button>
                       </PopoverTrigger>
