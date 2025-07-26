@@ -207,29 +207,32 @@ export function ChatPanel() {
                     </article>
                   </CardContent>
                   {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
-                     <Popover>
-                      <PopoverTrigger asChild>
-                        <button className="absolute bottom-1 right-1 transition-opacity">
-                          <Dot className="h-6 w-6 text-primary" />
-                        </button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-80" align="end">
-                        <div className="space-y-4">
-                          <h4 className="font-medium leading-none">Sources</h4>
-                          <div className="grid gap-2">
-                             {message.highlighted_contexts.map((context, index) => (
-                               <div key={index} className="flex items-start gap-2 text-sm">
-                                 <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                                 <span className="truncate">
-                                   {context.source}
-                                   {context.page && `, page ${context.page}`}
-                                 </span>
-                               </div>
-                             ))}
-                          </div>
-                        </div>
-                      </PopoverContent>
-                    </Popover>
+                     <div className="absolute bottom-1 right-1 flex items-center">
+                        {message.highlighted_contexts.map((context, index) => (
+                          <Popover key={index}>
+                            <PopoverTrigger asChild>
+                              <button className="transition-opacity">
+                                <Dot className="h-6 w-6 text-primary" />
+                              </button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-80" align="end">
+                              <div className="space-y-4">
+                                <h4 className="font-medium leading-none">Source</h4>
+                                <div className="grid gap-2">
+                                    <div className="flex items-start gap-2 text-sm">
+                                      <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                      <div className="flex flex-col">
+                                        <span className="font-semibold">{context.source}</span>
+                                        {context.page && <span>Page: {context.page}</span>}
+                                        {context.language && <span>Language: {context.language}</span>}
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </PopoverContent>
+                          </Popover>
+                        ))}
+                      </div>
                   )}
                 </Card>
               </div>
@@ -281,3 +284,5 @@ export function ChatPanel() {
   );
 
 }
+
+    
