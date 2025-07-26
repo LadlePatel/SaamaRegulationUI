@@ -1,4 +1,4 @@
-# **App Name**: SaamaRegulation
+# **App Name**: ANB Regulatory Advisor
 
 ## Core Features:
 

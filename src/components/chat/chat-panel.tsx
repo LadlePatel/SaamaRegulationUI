@@ -214,15 +214,16 @@ export function ChatPanel() {
                             </TooltipTrigger>
                             <TooltipContent className="w-80" align="start">
                               <div className="space-y-4">
-                                <h4 className="font-medium leading-none">Source</h4>
+                                
                                 <div className="grid gap-2">
                                   <div className="flex items-start gap-2 text-sm">
                                     <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
                                     <div className="flex flex-col">
-                                      <span className="text-xs">{context.source}</span>
+                                      <h4 className="font-medium leading-none text-xs">Source</h4>
+                                      <span className="text-xs font-bold">{context.source}</span>
                                       {context.page && <span className="text-sm">Page: {context.page}</span>}
                                       {context.language && <span className="text-sm">Language: {context.language}</span>}
-                                      {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-[50%] overflow-y-auto">{context.context_text}</p>}
+                                      {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
                                     </div>
                                   </div>
                                 </div>
