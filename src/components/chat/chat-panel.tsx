@@ -9,17 +9,14 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { SendHorizonal, Bot, User, FileText, Dot } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TypingIndicator } from "./typing-indicator";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
 import type { Message, ChatSession, HighlightedContext } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Separator } from "@/components/ui/separator";
 
-
-const initialMessages: Message[] = [];
 
 export function ChatPanel() {
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -122,7 +119,7 @@ export function ChatPanel() {
     try {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
-      
+
       const apiResponse = await fetch('http://localhost:8080/chat', {
         method: 'POST',
         headers: {
@@ -141,7 +138,7 @@ export function ChatPanel() {
       }
 
       const responseData = await apiResponse.json();
-      
+
       const assistantResponse: Message = {
         id: Date.now().toString(),
         role: "assistant",
@@ -174,9 +171,9 @@ export function ChatPanel() {
 
 
   return (
-    <div className="flex flex-col flex-1 h-full">
-      {/* Chat Messages Scroll Area */}
-      <ScrollArea className="flex-1 overflow-auto" ref={scrollAreaRef}>
+<div className="flex flex-col h-screen">
+  {/* Chat Messages Scroll Area */}
+  <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
           {messages.map((message) => (
             <div
@@ -192,54 +189,53 @@ export function ChatPanel() {
                 </Avatar>
               )}
               <div className="group/message space-y-2 max-w-[85%]">
-                 <div
+                <div
                   className={cn(
                     "relative group rounded-lg p-3",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground rounded-tr-none"
-                      : "bg-muted text-card-foreground rounded-tl-none",
+                      : "text-card-foreground rounded-tl-none",
                   )}
                 >
-                    <article className="prose prose-sm dark:prose-invert max-w-none text-inherit">
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </article>
+                  <article className="prose prose-sm dark:prose-invert max-w-none text-inherit">
+                    <ReactMarkdown>{message.content}</ReactMarkdown>
+                  </article>
                 </div>
                 {message.role === 'assistant' && message.highlighted_contexts && message.highlighted_contexts.length > 0 && (
-                   <div className="flex items-center justify-start pt-1">
-                      <Separator />
-                      <div className="flex items-center justify-end w-full p-2">
-                        <TooltipProvider>
-                            {message.highlighted_contexts.map((context, index) => (
-                            <Tooltip key={index}>
-                                <TooltipTrigger asChild>
-                                <button className="transition-opacity">
-                                    <Dot className="h-6 w-6 text-primary" />
-                                </button>
-                                </TooltipTrigger>
-                                <TooltipContent className="w-80" align="start">
-                                <div className="space-y-4">
-                                    <h4 className="font-medium leading-none">Source</h4>
-                                    <div className="grid gap-2">
-                                        <div className="flex items-start gap-2 text-sm">
-                                            <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
-                                            <div className="flex flex-col">
-                                                <span className="font-bold text-xs">{context.source}</span>
-                                                {context.page && <span className="text-sm">Page: {context.page}</span>}
-                                                {context.language && <span className="text-sm">Language: {context.language}</span>}
-                                                {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
-                                            </div>
-                                        </div>
+                  <div className="flex items-center justify-start">
+                    <div className="flex items-center justify-start w-full">
+                      <TooltipProvider>
+                        {message.highlighted_contexts.map((context, index) => (
+                          <Tooltip key={index}>
+                            <TooltipTrigger asChild>
+                              <button className="transition-opacity p-0">
+                                <Dot className="h-8 w-8 text-primary" />
+                              </button>
+                            </TooltipTrigger>
+                            <TooltipContent className="w-80" align="start">
+                              <div className="space-y-4">
+                                <h4 className="font-medium leading-none">Source</h4>
+                                <div className="grid gap-2">
+                                  <div className="flex items-start gap-2 text-sm">
+                                    <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
+                                    <div className="flex flex-col">
+                                      <span className="text-xs">{context.source}</span>
+                                      {context.page && <span className="text-sm">Page: {context.page}</span>}
+                                      {context.language && <span className="text-sm">Language: {context.language}</span>}
+                                      {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-[50%] overflow-y-auto">{context.context_text}</p>}
                                     </div>
+                                  </div>
                                 </div>
-                                </TooltipContent>
-                            </Tooltip>
-                            ))}
-                        </TooltipProvider>
-                      </div>
+                              </div>
+                            </TooltipContent>
+                          </Tooltip>
+                        ))}
+                      </TooltipProvider>
+                    </div>
                   </div>
-              )}
+                )}
               </div>
-               {message.role === 'user' && (
+              {message.role === 'user' && (
                 <Avatar className="h-9 w-9 border">
                   <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
                 </Avatar>
@@ -262,32 +258,32 @@ export function ChatPanel() {
       </ScrollArea>
 
       {/* Input Area */}
-      <div className="border-t bg-background/95 p-4 backdrop-blur-sm">
-        <Card className="relative flex w-full items-center rounded-2xl p-1.5">
-            <form onSubmit={handleSubmit} className="flex-1">
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask me anything about regulations..."
-                className="min-h-[42px] w-full resize-none border-none bg-transparent p-2 focus-visible:ring-0"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    handleSubmit(e as any);
-                  }
-                }}
-                disabled={isLoading}
-              />
-               <Button
-                type="submit"
-                size="icon"
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full h-8 w-8"
-                disabled={isLoading || !input.trim()}
-              >
-                <SendHorizonal className="h-4 w-4" />
-                <span className="sr-only">Send</span>
-              </Button>
-            </form>
+      <div className="sticky bottom-0 z-10 bg-background/95 p-4 backdrop-blur-sm">
+      <Card className="relative flex w-full items-center rounded-2xl p-1.5">
+          <form onSubmit={handleSubmit} className="flex-1">
+            <Textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Ask me anything about regulations..."
+              className="min-h-[42px] w-full resize-none border-none bg-transparent p-2 focus-visible:ring-0"
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSubmit(e as any);
+                }
+              }}
+              disabled={isLoading}
+            />
+            <Button
+              type="submit"
+              size="icon"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 rounded-full h-8 w-8"
+              disabled={isLoading || !input.trim()}
+            >
+              <SendHorizonal className="h-4 w-4" />
+              <span className="sr-only">Send</span>
+            </Button>
+          </form>
         </Card>
       </div>
     </div>

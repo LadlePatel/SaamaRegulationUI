@@ -108,7 +108,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
 
-        <SidebarGroup className="mt-4">
+        <SidebarGroup>
           <SidebarGroupLabel className="font-bold text-base">Chat History</SidebarGroupLabel>
           <SidebarMenu>
             {chatHistory.map((chat) => (
@@ -116,7 +116,7 @@ export function AppSidebar() {
                 <Link href={`/chat/${chat.id}`} className="w-full">
                   <SidebarMenuButton
                     isActive={pathname === `/chat/${chat.id}`}
-                    variant="ghost"
+                    variant="default"
                     className="w-full justify-start pr-8"
                   >
                     <span className="truncate">{chat.name}</span>
@@ -125,7 +125,7 @@ export function AppSidebar() {
                  <AlertDialog>
                     <AlertDialogTrigger asChild>
                          <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 opacity-0 group-hover/item:opacity-100">
-                           <Trash2 className="h-4 w-4" />
+                            <Trash2 className="h-4 w-4 text-red-500" />
                          </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
