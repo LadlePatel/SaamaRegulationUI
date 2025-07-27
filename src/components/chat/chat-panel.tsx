@@ -18,6 +18,13 @@ import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
+const suggestedQuestions = [
+  "What makes Sama’s outsourcing model different?",
+  "How should data be classified under the NDMO policy?",
+  "What are the key requirements of the SAMA Cybersecurity Framework?",
+  "What are the main principles of the SAMA IT Framework?",
+];
+
 export function ChatPanel() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -27,6 +34,7 @@ export function ChatPanel() {
   const params = useParams();
   const router = useRouter();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
 
 
   useEffect(() => {
@@ -93,7 +101,8 @@ export function ChatPanel() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
+    const currentInput = (e.currentTarget.elements.namedItem('input') as HTMLTextAreaElement)?.value || input;
+    if (!currentInput.trim() || isLoading) return;
 
     let currentSessionId = sessionId;
     const isNewChat = !params.chatId?.[0];
@@ -107,12 +116,11 @@ export function ChatPanel() {
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
-      content: input,
+      content: currentInput,
     };
 
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
-    const currentInput = input;
     setInput("");
     setIsLoading(true);
 
@@ -169,12 +177,36 @@ export function ChatPanel() {
     }
   };
 
+  const handleQuestionClick = (question: string) => {
+    setInput(question);
+    // Use a timeout to allow the state to update before submitting
+    setTimeout(() => {
+      formRef.current?.requestSubmit();
+    }, 0);
+  };
+
 
   return (
 <div className="flex flex-col h-screen">
   {/* Chat Messages Scroll Area */}
   <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8">
+        {messages.length === 0 && !isLoading && (
+            <div className="flex flex-col items-center justify-center h-full w-full">
+              <div className="max-w-md w-full space-y-2">
+                <h2 className="text-xl font-medium text-center mb-4">Get started with a question</h2>
+                 {suggestedQuestions.map((q, i) => (
+                  <Card 
+                    key={i} 
+                    className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors"
+                    onClick={() => handleQuestionClick(q)}
+                  >
+                    <p className="text-sm">{q}</p>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          )}
           {messages.map((message) => (
             <div
               key={message.id}
@@ -261,8 +293,9 @@ export function ChatPanel() {
       {/* Input Area */}
       <div className="sticky bottom-0 z-10 bg-background/95 p-4 backdrop-blur-sm">
       <Card className="relative flex w-full items-center rounded-2xl p-1.5">
-          <form onSubmit={handleSubmit} className="flex-1">
+          <form onSubmit={handleSubmit} ref={formRef} className="flex-1">
             <Textarea
+              name="input"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask me anything about regulations..."
