@@ -33,7 +33,6 @@ export function ChatPanel() {
   const { toast } = useToast();
   const params = useParams();
   const router = useRouter();
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
 
 
@@ -64,19 +63,6 @@ export function ChatPanel() {
       localStorage.setItem(CHAT_HISTORY_KEY_PREFIX + sessionId, JSON.stringify(messages));
     }
   }, [messages, sessionId]);
-
-  const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      const viewport = scrollAreaRef.current.querySelector("div[data-radix-scroll-area-viewport]");
-      if (viewport) {
-        viewport.scrollTop = viewport.scrollHeight;
-      }
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages, isLoading]);
 
   const handleNewChat = (newSessionId: string, firstMessage: string) => {
     const newChatName = firstMessage.substring(0, 35) + (firstMessage.length > 35 ? "..." : "");
@@ -189,7 +175,7 @@ export function ChatPanel() {
   return (
 <div className="flex flex-col h-screen">
   {/* Chat Messages Scroll Area */}
-  <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
+  <ScrollArea className="flex-1 overflow-y-auto flex flex-col-reverse">
         <div className="p-4 md:p-6 space-y-8">
         {messages.length === 0 && !isLoading && (
             <div className="flex flex-col items-center justify-center h-full w-full">
@@ -323,3 +309,5 @@ export function ChatPanel() {
     </div>
   );
 }
+
+    
