@@ -190,15 +190,15 @@ export function ChatPanel() {
 <div className="flex flex-col h-screen">
   {/* Chat Messages Scroll Area */}
   <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
-        <div className={cn("p-4 md:p-6 space-y-8", messages.length > 0 ? "flex flex-col-reverse" : "flex h-full")}>
+        <div className={cn("p-4 md:p-6 space-y-8", messages.length > 0 && "flex flex-col-reverse")}>
         {messages.length === 0 && !isLoading && (
             <div className="flex flex-col items-center justify-center w-full h-full">
               <div className="max-w-2xl w-full flex flex-col items-center">
                 <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
                  <div className="flex flex-wrap justify-center gap-2">
                   {suggestedQuestions.map((q, i) => (
-                    <button 
-                      key={i} 
+                    <button
+                      key={i}
                       className="px-3 py-1 rounded-full bg-secondary hover:bg-primary/10 cursor-pointer transition-colors text-xs text-secondary-foreground"
                       onClick={() => handleQuestionClick(q)}
                     >
@@ -323,8 +323,3 @@ export function ChatPanel() {
     </div>
   );
 }
-
-    
-
-    
-
