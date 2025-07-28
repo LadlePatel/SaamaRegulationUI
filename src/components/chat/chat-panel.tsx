@@ -19,14 +19,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 
 const suggestedQuestions = [
-  "How much are the administrative fees charged by ANB for a personal loan?",
-  "What are the late payment fees for a personal loan with ANB?",
-  "How is the installment or monthly repayment amount calculated for Personal Financing in ANB?",
-  "What is the validity of anb reward points?",
-  "What warranties, disclaimers, and limitations of liability apply in the ANB Reward program?",
-  "What is the difference between Alfursan Visa infinite and Alfursan visa signature?",
-  "Give me Summery of Mubarak Murabaha.",
-  "What are the Credit card Terms and conditions of Al Fursan?",
+  "What are the core principles guiding ethical AI use in Saudi Arabia?",
+  "What are the key IT governance requirements for SAMA-regulated organizations?",
+  "How should government data be classified and protected in Saudi Arabia?",
+  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
+  "What are the national standards for managing and protecting data in Saudi Arabia?",
+  "What makes Sama’s outsourcing model different?",
+  "How should data be classified under the NDMO policy?",
+  "What are the key requirements of the SAMA Cybersecurity Framework?",
+  "What are the main principles of the SAMA IT Framework?",
 ];
 
 export function ChatPanel() {
