@@ -190,7 +190,7 @@ export function ChatPanel() {
 <div className="flex flex-col h-screen">
   {/* Chat Messages Scroll Area */}
   <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
-        <div className={cn("p-4 md:p-6 space-y-8", messages.length > 0 && "flex flex-col-reverse")}>
+        <div className={cn("p-4 md:p-6 space-y-8", messages.length > 0 && "flex flex-col-reverse", messages.length === 0 && 'h-full flex flex-col')}>
         {messages.length === 0 && !isLoading && (
             <div className="flex flex-col items-center justify-center w-full h-full">
               <div className="max-w-2xl w-full flex flex-col items-center">
@@ -303,7 +303,7 @@ export function ChatPanel() {
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
                   e.preventDefault();
-                  handleSubmit(e as any);
+                  formRef.current?.requestSubmit();
                 }
               }}
               disabled={isLoading}
