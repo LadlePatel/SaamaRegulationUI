@@ -21,10 +21,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 const suggestedQuestions = [
   "What are the core principles guiding ethical AI use in Saudi Arabia?",
   "What are the key IT governance requirements for SAMA-regulated organizations?",
-  "How should government data be classified and protected in Saudi Arabia?",
-  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
   "What are the national standards for managing and protecting data in Saudi Arabia?",
   "What makes Sama’s outsourcing model different?",
+  "How should government data be classified and protected in Saudi Arabia?",
+  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
   "How should data be classified under the NDMO policy?",
   "What are the key requirements of the SAMA Cybersecurity Framework?",
   "What are the main principles of the SAMA IT Framework?",
