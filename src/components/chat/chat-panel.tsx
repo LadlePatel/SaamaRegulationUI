@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { SendHorizonal, Bot, User, FileText, Dot } from "lucide-react";
+import { SendHorizonal, Bot, User, FileText } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TypingIndicator } from "./typing-indicator";
 import { Card, CardContent } from "@/components/ui/card";
@@ -19,6 +19,11 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 
 const suggestedQuestions = [
+  "What are the core principles guiding ethical AI use in Saudi Arabia?",
+  "What are the key IT governance requirements for SAMA-regulated organizations?",
+  "How should government data be classified and protected in Saudi Arabia?",
+  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
+  "What are the national standards for managing and protecting data in Saudi Arabia?",
   "What makes Sama’s outsourcing model different?",
   "How should data be classified under the NDMO policy?",
   "What are the key requirements of the SAMA Cybersecurity Framework?",
@@ -34,6 +39,7 @@ export function ChatPanel() {
   const params = useParams();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
 
   useEffect(() => {
@@ -62,6 +68,14 @@ export function ChatPanel() {
     if (sessionId && messages.length > 0) {
       localStorage.setItem(CHAT_HISTORY_KEY_PREFIX + sessionId, JSON.stringify(messages));
     }
+
+    if (scrollAreaRef.current) {
+        scrollAreaRef.current.scrollTo({
+            top: scrollAreaRef.current.scrollHeight,
+            behavior: 'smooth'
+        });
+    }
+
   }, [messages, sessionId]);
 
   const handleNewChat = (newSessionId: string, firstMessage: string) => {
@@ -175,25 +189,27 @@ export function ChatPanel() {
   return (
 <div className="flex flex-col h-screen">
   {/* Chat Messages Scroll Area */}
-  <ScrollArea className="flex-1 overflow-y-auto flex flex-col-reverse">
-        <div className="p-4 md:p-6 space-y-8">
+  <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
+        <div className="p-4 md:p-6 space-y-8 flex flex-col-reverse min-h-full">
         {messages.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-full w-full">
-              <div className="max-w-md w-full space-y-2">
-                <h2 className="text-xl font-medium text-center mb-4">Get started with a question</h2>
-                 {suggestedQuestions.map((q, i) => (
-                  <Card 
-                    key={i} 
-                    className="p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors"
-                    onClick={() => handleQuestionClick(q)}
-                  >
-                    <p className="text-sm">{q}</p>
-                  </Card>
-                ))}
+            <div className="flex flex-col items-center justify-center h-full w-full my-auto">
+              <div className="max-w-2xl w-full flex flex-col items-center">
+                <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
+                 <div className="flex flex-wrap justify-center gap-3">
+                  {suggestedQuestions.map((q, i) => (
+                    <button 
+                      key={i} 
+                      className="p-3 rounded-full bg-secondary hover:bg-primary/10 cursor-pointer transition-colors text-sm text-secondary-foreground"
+                      onClick={() => handleQuestionClick(q)}
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           )}
-          {messages.map((message) => (
+          {[...messages].reverse().map((message) => (
             <div
               key={message.id}
               className={cn(
@@ -224,21 +240,19 @@ export function ChatPanel() {
                     <div className="flex items-center justify-start w-full">
                       <TooltipProvider>
                         {message.highlighted_contexts.map((context, index) => (
-                          <Tooltip key={index}>
-                            <TooltipTrigger asChild>
+                           <Tooltip key={index}>
+                           <TooltipTrigger asChild>
                               <button className="transition-opacity p-0">
-                                <Dot className="h-8 w-8 text-primary" />
+                                <span className="h-8 w-8 text-primary flex items-center justify-center text-xs font-bold border-2 border-primary rounded-full">{index + 1}</span>
                               </button>
                             </TooltipTrigger>
                             <TooltipContent className="w-80" align="start">
                               <div className="space-y-4">
-                                
                                 <div className="grid gap-2">
                                   <div className="flex items-start gap-2 text-sm">
                                     <FileText className="h-4 w-4 mt-1 flex-shrink-0" />
                                     <div className="flex flex-col">
-                                      <h4 className="font-medium leading-none text-xs">Source</h4>
-                                      <span className="text-xs font-bold">{context.source}</span>
+                                      <h4 className="font-bold text-xs leading-none">{context.source}</h4>
                                       {context.page && <span className="text-sm">Page: {context.page}</span>}
                                       {context.language && <span className="text-sm">Language: {context.language}</span>}
                                       {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
@@ -309,5 +323,7 @@ export function ChatPanel() {
     </div>
   );
 }
+
+    
 
     
