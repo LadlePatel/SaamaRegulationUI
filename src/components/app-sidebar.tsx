@@ -36,7 +36,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { ThemeToggle } from "@/components/theme-toggle";
 import Image from "next/image";
 
 
@@ -158,7 +157,6 @@ export function AppSidebar() {
                 <User className="h-5 w-5" />
               </Button>
             </Link>
-             <ThemeToggle />
         </div>
       </SidebarFooter>
     </Sidebar>
