@@ -70,10 +70,10 @@ export function ChatPanel() {
     }
 
     if (scrollAreaRef.current) {
-        scrollAreaRef.current.scrollTo({
-            top: scrollAreaRef.current.scrollHeight,
-            behavior: 'smooth'
-        });
+      scrollAreaRef.current.scrollTo({
+        top: scrollAreaRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
 
   }, [messages, sessionId]);
@@ -187,19 +187,19 @@ export function ChatPanel() {
 
 
   return (
-<div className="flex flex-col h-screen">
-  {/* Chat Messages Scroll Area */}
-  <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
-        <div className={cn("p-4 md:p-6 space-y-8", messages.length > 0 && "flex flex-col-reverse", messages.length === 0 && 'h-full flex flex-col')}>
-        {messages.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center w-full h-full">
-              <div className="max-w-2xl w-full flex flex-col items-center">
+    <div className="flex flex-col h-screen">
+      {/* Chat Messages Scroll Area */}
+      <ScrollArea className="flex-1 flex flex-col relative" ref={scrollAreaRef}>
+        <div className={cn("p-4 md:p-6 space-y-8 flex flex-col justify-end min-h-full bottom-0")}>
+          {messages.length === 0 && !isLoading && (
+            <div className="flex flex-col items-center justify-center w-full h-[80vh]">
+              <div className="max-w-2xl h-full flex flex-col items-center justify-center">
                 <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
-                 <div className="flex flex-wrap justify-center gap-2">
+                <div className="flex flex-wrap justify-center gap-2">
                   {suggestedQuestions.map((q, i) => (
                     <button
                       key={i}
-                      className="px-3 py-1 rounded-full bg-secondary hover:bg-primary/10 cursor-pointer transition-colors text-xs text-secondary-foreground"
+                      className="px-3 py-1 border-2 rounded-full bg-secondary hover:bg-primary/60 hover:text-primary-foreground hover:scale-105 transition-colors text-[15px] text-secondary-foreground cursor-pointer"
                       onClick={() => handleQuestionClick(q)}
                     >
                       {q}
@@ -209,7 +209,7 @@ export function ChatPanel() {
               </div>
             </div>
           )}
-          {[...messages].reverse().map((message) => (
+          {[...messages].map((message) => (
             <div
               key={message.id}
               className={cn(
@@ -240,10 +240,10 @@ export function ChatPanel() {
                     <div className="flex items-center justify-start w-full">
                       <TooltipProvider>
                         {message.highlighted_contexts.map((context, index) => (
-                           <Tooltip key={index}>
-                           <TooltipTrigger asChild>
+                          <Tooltip key={index}>
+                            <TooltipTrigger asChild>
                               <button className="transition-opacity p-0">
-                                <span className="h-8 w-8 text-primary flex items-center justify-center text-xs font-bold border-2 border-primary rounded-full">{index + 1}</span>
+                                <span className="h-6 w-6 text-primary flex items-center justify-center text-xs font-bold border-[1px] mr-2 border-primary rounded-full">{index + 1}</span>
                               </button>
                             </TooltipTrigger>
                             <TooltipContent className="w-80" align="start">
@@ -255,7 +255,7 @@ export function ChatPanel() {
                                       <h4 className="font-bold text-xs leading-none">{context.source}</h4>
                                       {context.page && <span className="text-sm">Page: {context.page}</span>}
                                       {context.language && <span className="text-sm">Language: {context.language}</span>}
-                                      {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-24 overflow-y-auto">{context.context_text}</p>}
+                                      {context.context_text && <p className="mt-2 text-xs text-muted-foreground max-h-[40%] overflow-y-auto">{context.context_text}</p>}
                                     </div>
                                   </div>
                                 </div>
@@ -292,7 +292,7 @@ export function ChatPanel() {
 
       {/* Input Area */}
       <div className="sticky bottom-0 z-10 bg-background/95 p-4 backdrop-blur-sm">
-      <Card className="relative flex w-full items-center rounded-2xl p-1.5">
+        <Card className="relative flex w-full items-center rounded-2xl p-1.5">
           <form onSubmit={handleSubmit} ref={formRef} className="flex-1">
             <Textarea
               name="input"
