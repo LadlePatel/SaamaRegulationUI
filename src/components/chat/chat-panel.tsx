@@ -195,11 +195,11 @@ export function ChatPanel() {
             <div className="flex flex-col items-center justify-center h-full w-full my-auto">
               <div className="max-w-2xl w-full flex flex-col items-center">
                 <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
-                 <div className="flex flex-wrap justify-center gap-3">
+                 <div className="flex flex-wrap justify-center gap-2">
                   {suggestedQuestions.map((q, i) => (
                     <button 
                       key={i} 
-                      className="p-3 rounded-full bg-secondary hover:bg-primary/10 cursor-pointer transition-colors text-sm text-secondary-foreground"
+                      className="px-4 py-2 rounded-full bg-secondary hover:bg-primary/10 cursor-pointer transition-colors text-xs text-secondary-foreground"
                       onClick={() => handleQuestionClick(q)}
                     >
                       {q}
