@@ -192,7 +192,7 @@ export function ChatPanel() {
   <ScrollArea className="flex-1 overflow-y-auto" ref={scrollAreaRef}>
         <div className="p-4 md:p-6 space-y-8 flex flex-col-reverse min-h-full">
         {messages.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-full w-full my-auto">
+            <div className="flex flex-col items-center justify-center flex-1 w-full">
               <div className="max-w-2xl w-full flex flex-col items-center">
                 <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
                  <div className="flex flex-wrap justify-center gap-2">
@@ -323,5 +323,7 @@ export function ChatPanel() {
     </div>
   );
 }
+
+    
 
     
