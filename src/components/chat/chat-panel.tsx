@@ -23,7 +23,6 @@ const suggestedQuestions = [
   "What are the key IT governance requirements for SAMA-regulated organizations?",
   "What are the national standards for managing and protecting data in Saudi Arabia?",
   "Who is responsible for classifying data within the organization?",
-  "How should government data be classified and protected in Saudi Arabia?",
   "What are the key cyber security requirements for financial institutions regulated by SAMA?",
   "How should data be classified under the NDMO policy?",
   "What are the key requirements of the SAMA Cybersecurity Framework?",
