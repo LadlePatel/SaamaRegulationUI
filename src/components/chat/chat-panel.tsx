@@ -128,7 +128,7 @@ export function ChatPanel() {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
 
-      const apiResponse = await fetch('http://localhost:8080/chat', {
+        const apiResponse = await fetch('https://saama-regulation-84218037131.asia-south1.run.app/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
