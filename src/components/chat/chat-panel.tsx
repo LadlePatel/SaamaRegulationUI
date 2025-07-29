@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
-import type { Message, ChatSession, HighlightedContext } from "@/lib/schemas";
+import type { Message, ChatSession} from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -22,7 +22,7 @@ const suggestedQuestions = [
   "What are the core principles guiding ethical AI use in Saudi Arabia?",
   "What are the key IT governance requirements for SAMA-regulated organizations?",
   "What are the national standards for managing and protecting data in Saudi Arabia?",
-  "What makes Sama’s outsourcing model different?",
+  "Who is responsible for classifying data within the organization?",
   "How should government data be classified and protected in Saudi Arabia?",
   "What are the key cyber security requirements for financial institutions regulated by SAMA?",
   "How should data be classified under the NDMO policy?",
@@ -128,7 +128,7 @@ export function ChatPanel() {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
 
-      const apiResponse = await fetch('https://saama-regulation-84218037131.asia-south1.run.app/chat', {
+      const apiResponse = await fetch('http://localhost:8080/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

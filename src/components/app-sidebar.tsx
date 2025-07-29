@@ -115,7 +115,6 @@ export function AppSidebar() {
                 <Link href={`/chat/${chat.id}`} className="w-full">
                   <SidebarMenuButton
                     isActive={pathname === `/chat/${chat.id}`}
-                    variant="default"
                     className="w-full justify-start pr-8"
                   >
                     <span className="truncate">{chat.name}</span>
