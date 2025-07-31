@@ -19,14 +19,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 
 
 const suggestedQuestions = [
-  "What are the core principles guiding ethical AI use in Saudi Arabia?",
-  "What are the key IT governance requirements for SAMA-regulated organizations?",
-  "What are the national standards for managing and protecting data in Saudi Arabia?",
-  "Who is responsible for classifying data within the organization?",
-  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
-  "How should data be classified under the NDMO policy?",
-  "What are the key requirements of the SAMA Cybersecurity Framework?",
-  "What are the main principles of the SAMA IT Framework?",
+  "What services are provided through ANB Capital’s Global Trading platform?",
+  "How can I subscribe to real-time market data on international exchanges?",
+  "What are the eligibility requirements to open an international investment account with ANB Capital?",
+  "What features are available on the ANB Capital Saudi trading platform?",
+  "What are the trading hours for the Saudi Stock Exchange as supported by ANB Capital?",
+  "Which mutual funds are offered by ANB Capital and what are their key characteristics?",
+  "Is the Digital & IT Equity Fund Shariah-compliant and what sectors does it focus on?",
+  "What are the subscription and redemption procedures for ANB Capital’s mutual funds?",
+  "How secure is access to ANB Capital’s digital trading services, and what protection mechanisms are in place?",
 ];
 
 export function ChatPanel() {
@@ -127,7 +128,7 @@ export function ChatPanel() {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
 
-        const apiResponse = await fetch('https://saama-regulation-84218037131.asia-south1.run.app/chat', {
+        const apiResponse = await fetch('https://anb-capital-84218037131.asia-south1.run.app/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

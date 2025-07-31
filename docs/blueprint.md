@@ -1,4 +1,4 @@
-# **App Name**: ANB Regulatory Advisor
+# **App Name**: ANB CAPITAL
 
 ## Core Features:
 
