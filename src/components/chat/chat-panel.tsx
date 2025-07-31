@@ -13,20 +13,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import ReactMarkdown from 'react-markdown';
 import { useToast } from "@/hooks/use-toast";
 import { useParams, useRouter } from "next/navigation";
-import type { Message, ChatSession} from "@/lib/schemas";
+import type { Message, ChatSession } from "@/lib/schemas";
 import { CHAT_HISTORY_KEY_PREFIX, ALL_CHATS_SESSIONS_KEY } from "@/lib/schemas";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 
 const suggestedQuestions = [
-  "What are the core principles guiding ethical AI use in Saudi Arabia?",
-  "What are the key IT governance requirements for SAMA-regulated organizations?",
-  "What are the national standards for managing and protecting data in Saudi Arabia?",
-  "Who is responsible for classifying data within the organization?",
-  "What are the key cyber security requirements for financial institutions regulated by SAMA?",
-  "How should data be classified under the NDMO policy?",
-  "What are the key requirements of the SAMA Cybersecurity Framework?",
-  "What are the main principles of the SAMA IT Framework?",
+  "What services are provided through ANB Capital’s Global Trading platform?",
+  "How can I subscribe to real-time market data on international exchanges?",
+  "What are the eligibility requirements to open an international investment account with ANB Capital?",
+  "What features are available on the ANB Capital Saudi trading platform?",
+  "What are the trading hours for the Saudi Stock Exchange as supported by ANB Capital?",
+  "Which mutual funds are offered by ANB Capital and what are their key characteristics?",
+  "Is the Digital & IT Equity Fund Shariah-compliant and what sectors does it focus on?",
+  "What are the subscription and redemption procedures for ANB Capital’s mutual funds?",
+  "How secure is access to ANB Capital’s digital trading services, and what protection mechanisms are in place?"
 ];
 
 export function ChatPanel() {
@@ -127,7 +128,7 @@ export function ChatPanel() {
       const historyForApi = updatedMessages
         .map(({ role, content }) => ({ role, content }));
 
-        const apiResponse = await fetch('https://saama-regulation-84218037131.asia-south1.run.app/chat', {
+      const apiResponse = await fetch('https://anb-capital-84218037131.asia-south1.run.app/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -189,16 +190,16 @@ export function ChatPanel() {
     <div className="flex flex-col h-screen">
       {/* Chat Messages Scroll Area */}
       <ScrollArea className="flex-1 flex flex-col relative" ref={scrollAreaRef}>
-        <div className={cn("p-4 md:p-6 space-y-8 flex flex-col justify-end min-h-full bottom-0")}>
+        <div className={cn("p-4 md:p-6 space-y-8 flex flex-col justify-end min-h-full bottom-0", { "items-center justify-center": messages.length === 0 })}>
           {messages.length === 0 && !isLoading && (
-            <div className="flex flex-col items-center justify-center w-full h-[80vh]">
-              <div className="max-w-2xl h-full flex flex-col items-center justify-center">
-                <h2 className="text-xl font-medium text-center mb-6">Frequently Asked Questions</h2>
-                <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-col items-center justify-center w-full">
+              <div className="max-w-2xl text-center">
+                <h2 className="text-2xl font-bold mb-6">Frequently Asked Questions</h2>
+                <div className="flex flex-wrap justify-center gap-3">
                   {suggestedQuestions.map((q, i) => (
                     <button
                       key={i}
-                      className="px-3 py-1 border-2 rounded-full bg-secondary hover:bg-primary/60 hover:text-primary-foreground hover:scale-105 transition-colors text-[15px] text-secondary-foreground cursor-pointer"
+                      className="px-4 py-2 border border-border rounded-full bg-secondary/50 hover:bg-primary hover:text-primary-foreground transition-colors text-sm text-secondary-foreground cursor-pointer"
                       onClick={() => handleQuestionClick(q)}
                     >
                       {q}
@@ -217,7 +218,7 @@ export function ChatPanel() {
               )}
             >
               {message.role === 'assistant' && (
-                <Avatar className="h-9 w-9 border">
+                <Avatar className="h-9 w-9 border-2 border-primary">
                   <AvatarFallback className="bg-primary text-primary-foreground"><Bot /></AvatarFallback>
                 </Avatar>
               )}
@@ -227,10 +228,10 @@ export function ChatPanel() {
                     "relative group rounded-lg p-3",
                     message.role === "user"
                       ? "bg-primary text-primary-foreground rounded-tr-none"
-                      : "bg-card text-card-foreground rounded-tl-none",
+                      : "bg-secondary text-secondary-foreground rounded-tl-none",
                   )}
                 >
-                  <article className="prose prose-sm dark:prose-invert max-w-none text-inherit">
+                  <article className="prose prose-sm prose-invert max-w-none text-inherit">
                     <ReactMarkdown>{message.content}</ReactMarkdown>
                   </article>
                 </div>
@@ -268,7 +269,7 @@ export function ChatPanel() {
                 )}
               </div>
               {message.role === 'user' && (
-                <Avatar className="h-9 w-9 border">
+                <Avatar className="h-9 w-9 border-2 border-border">
                   <AvatarFallback className="bg-secondary text-secondary-foreground"><User /></AvatarFallback>
                 </Avatar>
               )}
@@ -276,10 +277,10 @@ export function ChatPanel() {
           ))}
           {isLoading && (
             <div className="flex items-start gap-4">
-              <Avatar className="h-9 w-9 border">
+              <Avatar className="h-9 w-9 border-2 border-primary">
                 <AvatarFallback className="bg-primary text-primary-foreground"><Bot /></AvatarFallback>
               </Avatar>
-              <Card className="max-w-[85%] rounded-2xl rounded-tl-none bg-muted">
+              <Card className="max-w-[85%] rounded-2xl rounded-tl-none bg-secondary">
                 <CardContent className="p-3">
                   <TypingIndicator />
                 </CardContent>

@@ -10,7 +10,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "ANB Regulatory Advisor",
+  title: "ANB CAPITAL",
   description: "A modern, production-ready chat interface.",
   icons: {
     icon: "/anb.svg",
