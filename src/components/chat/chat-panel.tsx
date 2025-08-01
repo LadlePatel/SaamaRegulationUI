@@ -27,15 +27,15 @@ import {
 
 
 const suggestedQuestions = [
-  "What are the core principles regarding ethical AI use in Saudi Arabia?",
-  "What are the key IT governance requirements for SAMA-regulated organizations?",
-  "How should government data be classified and protected in Saudi Arabia?",
-  "What are the key cybersecurity requirements for financial institutions regulated by SAMA?",
-  "What are the national standards for managing and protecting data in Saudi Arabia?",
-  "What makes Sama's outsourcing model different?",
-  "How should data be classified under the NDMO policy?",
-  "What are the key requirements of the SAMA Cybersecurity Framework?",
-  "What are the main principles of the SAMA IT Framework?"
+  "What services are provided through ANB Capital’s Global Trading platform?",
+  "How can I subscribe to real-time market data on international exchanges?",
+  "What are the eligibility requirements to open an international investment account with ANB Capital?",
+  "What features are available on the ANB Capital Saudi trading platform?",
+  "What are the trading hours for the Saudi Stock Exchange as supported by ANB Capital?",
+  "Which mutual funds are offered by ANB Capital and what are their key characteristics?",
+  "Is the Digital & IT Equity Fund Shariah-compliant and what sectors does it focus on?",
+  "What are the subscription and redemption procedures for ANB Capital’s mutual funds?",
+  "How secure is access to ANB Capital’s digital trading services, and what protection mechanisms are in place?",
 ];
 
 export function ChatPanel() {
