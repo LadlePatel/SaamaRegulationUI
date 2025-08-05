@@ -96,8 +96,8 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <Image src="https://anbgpt.web.app/static/media/anb.17001d91be60b4e96b91f1420625ba78.svg" alt="ANB Regulatory Advisor Logo" width={24} height={24} className="h-6 w-6" />
-          <span className="text-lg font-semibold">ANB Regulatory Advisor</span>
+          <Image src="https://anbgpt.web.app/static/media/anb.17001d91be60b4e96b91f1420625ba78.svg" alt="ANB GPT Logo" width={24} height={24} className="h-6 w-6" />
+          <span className="text-lg font-semibold">ANB GPT</span>
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
