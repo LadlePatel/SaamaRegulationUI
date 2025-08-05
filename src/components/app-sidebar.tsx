@@ -113,23 +113,6 @@ export function AppSidebar() {
               </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
-          <SidebarMenuItem>
-            <label htmlFor="pdf-upload" className="w-full cursor-pointer">
-              <SidebarMenuButton className="w-full" asChild>
-                <div>
-                  <Upload className="h-5 w-5" />
-                  <span>Upload PDF</span>
-                </div>
-              </SidebarMenuButton>
-            </label>
-            <input 
-              id="pdf-upload" 
-              type="file" 
-              accept=".pdf" 
-              className="hidden"
-              onChange={handleFileChange} 
-            />
-          </SidebarMenuItem>
         </SidebarMenu>
 
         <SidebarGroup>
@@ -169,7 +152,27 @@ export function AppSidebar() {
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-2 flex flex-col gap-2">
+        <SidebarMenu>
+            <SidebarMenuItem>
+                <label htmlFor="pdf-upload" className="w-full cursor-pointer">
+                <SidebarMenuButton className="w-full" asChild>
+                    <div>
+                    <Upload className="h-5 w-5" />
+                    <span>Upload PDF</span>
+                    </div>
+                </SidebarMenuButton>
+                </label>
+                <input 
+                id="pdf-upload" 
+                type="file" 
+                accept=".pdf" 
+                className="hidden"
+                onChange={handleFileChange} 
+                />
+            </SidebarMenuItem>
+        </SidebarMenu>
+
         <div className="flex flex-row items-center justify-around w-full">
             <Link href="/settings">
               <Button variant="ghost" size="icon" className={pathname === "/settings" ? "bg-accent" : ""}>
