@@ -13,10 +13,10 @@ import {
   SidebarGroupLabel,
 } from "@/components/ui/sidebar";
 import {
-  BotMessageSquare,
   MessageSquare,
   Settings,
   Trash2,
+  Upload,
   User,
 } from "lucide-react";
 import Link from "next/link";
@@ -83,6 +83,14 @@ export function AppSidebar() {
     }
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log("Selected file:", file.name);
+      // TODO: Implement file upload logic
+    }
+  };
+
 
   return (
     <Sidebar>
@@ -104,6 +112,23 @@ export function AppSidebar() {
                 <span>New Chat</span>
               </SidebarMenuButton>
             </Link>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <label htmlFor="pdf-upload" className="w-full cursor-pointer">
+              <SidebarMenuButton className="w-full" asChild>
+                <div>
+                  <Upload className="h-5 w-5" />
+                  <span>Upload PDF</span>
+                </div>
+              </SidebarMenuButton>
+            </label>
+            <input 
+              id="pdf-upload" 
+              type="file" 
+              accept=".pdf" 
+              className="hidden"
+              onChange={handleFileChange} 
+            />
           </SidebarMenuItem>
         </SidebarMenu>
 
